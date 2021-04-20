@@ -60,7 +60,7 @@ const products = [
 ]
 
 async function seed() {
-  await db.sync({ force: true }) // clears db and matches models to tables
+  await db.sync() // clears db and matches models to tables
   console.log('db synced!')
 
   // Creating Users
