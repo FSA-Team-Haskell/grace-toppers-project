@@ -19,7 +19,6 @@ export class SingleProduct extends React.Component {
         this.state = {
             product:{},
         }
-        console.log('props', this.props)
     }
 
     async componentDidMount(){
@@ -32,11 +31,9 @@ export class SingleProduct extends React.Component {
     handleClick(){
         console.log('added to cart!') //update with actual funciton to add to cart
     }
-    
+
     render() {
         const {product} = this.state
-        console.log('Props-->', this.props)
-        console.log('STATE->', this.state)
         return (
             <div>
                 <h1>{product.title}</h1>
