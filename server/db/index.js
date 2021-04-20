@@ -9,8 +9,6 @@ const Product = require('./models/product')
 
 module.exports = {
   db,
-  models: {
-    User,
-    Product
-  },
+  User,
+  Product
 }
