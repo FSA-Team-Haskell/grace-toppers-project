@@ -1,7 +1,7 @@
 'use strict'
 
-const {db,User } = require('../server/db')
-const Product = require('../server/db/models/product')
+const {db, User, Cart, Product, Order } = require('../server/db')
+// const Product = require('../server/db/models/product')
 
 /**
  * seed - this function clears the database, updates tables to
@@ -60,19 +60,27 @@ const products = [
 ]
 
 async function seed() {
-  await db.sync() // clears db and matches models to tables
+  await db.sync({force: true}) // clears db and matches models to tables
   console.log('db synced!')
 
   // Creating Users
   const users = await Promise.all([
-    User.create({ username: 'cody', password: '123', email: 'example@gmail.com' }),
-    User.create({ username: 'murphy', password: '123', email: 'murphy@gmail.com' }),
+    User.create({ username: 'cody', password: '123', email: 'example@gmail.com', isAdmin: false, }),
+    User.create({ username: 'murphy', password: '123', email: 'murphy@gmail.com', isAdmin: false, }),
   ])
+
+  const carts = await Promise.all([
+    Cart.create({ isPurchased: false, }),
+  ])
+  
+  await carts[0].setUser(users[0])
 
   console.log(`seeded ${users.length} users`)
   console.log(`seeded successfully`)
 
   const hats = await Product.bulkCreate(products)
+
+  await carts[0].setProduct(hats[0])
 
   console.log(`seeded ${hats.length} products`)
   console.log(`seeded successfully`)
