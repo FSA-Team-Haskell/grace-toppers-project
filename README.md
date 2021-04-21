@@ -75,3 +75,6 @@ Database Setup
 
 
 Now, you should be deployed!
+
+Requirements:
+https://github.com/FullstackAcademy/2103-FSA-RM-WEB-FT/blob/main/03-senior-phase/01-grace-shopper/tiers.md
