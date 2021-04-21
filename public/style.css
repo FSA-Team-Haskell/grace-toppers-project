@@ -24,3 +24,19 @@ form div {
   width: 150px;
   height: 150px;
 }
+
+#all-products {
+  display: flex;
+  direction: ltr;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 1rem;
+}
+
+#individual-products {
+  margin: 1rem;
+  opacity: 80%;
+  position: relative;
+  background-color: white;
+}

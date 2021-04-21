@@ -1,7 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import { fetchProducts } from "../store/allProducts";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { fetchProducts } from '../store/allProducts';
 
 export class AllProducts extends React.Component {
   constructor() {
@@ -15,9 +15,9 @@ export class AllProducts extends React.Component {
       return <div>Loading</div>;
     }
     return (
-      <div>
-        {this.props.products.map(product => (
-          <div key={product.id}>
+      <div id="all-products">
+        {this.props.products.map((product) => (
+          <div id="individual-products" key={product.id}>
             <Link to={`/products/${product.id}`}>
               <img className="hatPic" src={product.pictureURL} />
               <h1>{product.title}</h1>
@@ -30,13 +30,13 @@ export class AllProducts extends React.Component {
   }
 }
 
-const mapDispatch = dispatch => {
+const mapDispatch = (dispatch) => {
   return {
     getProducts: () => dispatch(fetchProducts()),
   };
 };
 
-const mapState = state => {
+const mapState = (state) => {
   return {
     products: state.allProducts,
   };
