@@ -17,7 +17,6 @@ const gotSingleProduct = (product) =>{
 
 export const getSingleProduct = (id) =>{
   return  async (dispatch) =>{
-    console.log('dispatching')
     const {data: product } = await axios.get(`/api/products/${id}`)
     dispatch(gotSingleProduct(product))
   }

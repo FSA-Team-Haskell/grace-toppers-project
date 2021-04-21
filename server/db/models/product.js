@@ -12,7 +12,7 @@ const Product = db.define('product',{
     allowNull: false
   },
   price:{
-    type: Sequelize.FLOAT,
+    type: Sequelize.INTEGER,
     allowNull: false,
     validate:{
       min: 0
@@ -20,7 +20,8 @@ const Product = db.define('product',{
   },
   pictureURL:{
     type: Sequelize.TEXT,
-    allowNull: false
+    allowNull: false,
+    defaultValue: 'https://www.dia.org/sites/default/files/No_Img_Avail.jpg'
   },
   rating:{
     type: Sequelize.INTEGER,
