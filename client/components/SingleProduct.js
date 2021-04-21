@@ -38,7 +38,7 @@ export class SingleProduct extends React.Component {
             <div>
                 <h1>{product.title}</h1>
                 <img className="hatPic" src={product.pictureURL} />
-                <p>${product.price}</p>
+                <p>${product.price / 100}</p>
                 <p>{product.description}</p>
                 <p>Rating: {product.rating}/5</p>
                 <button type='button' onClick={this.handleClick} >Add to cart</button>
