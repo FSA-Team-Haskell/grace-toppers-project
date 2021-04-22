@@ -13,7 +13,7 @@ class Home extends React.Component {
     const { email } = this.props;
     return (
       <div>
-        <h3>Welcome, {email}</h3>
+        <h3>Welcome</h3>
         <AllProducts />
       </div>
     );
