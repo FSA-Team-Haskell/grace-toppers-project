@@ -1,10 +1,12 @@
 const router = require("express").Router();
 const { Product } = require("../db");
 const { requireToken, isAdmin } = require("./gatekeepingMiddleware");
+
 // GET api/products/
 router.get("/", requireToken, async (req, res, next) => {
   try {
-    res.send(req.user);
+    const products = await Product.findAll();
+    res.send(products);
   } catch (error) {
     next(error);
   }
