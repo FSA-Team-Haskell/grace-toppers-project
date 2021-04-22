@@ -16,7 +16,7 @@ export const fetchProducts = () => {
           authorization: token,
         },
       };
-      const { data: products } = await axios.get("/api/products", sendData);
+      const { data: products } = await axios.get("/api/products");
       dispatch(setProducts(products));
     } catch (error) {
       console.log("Error fetching products from server");
