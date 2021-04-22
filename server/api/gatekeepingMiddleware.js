@@ -1,8 +1,7 @@
-const { User } = require("../db");
+const { User } = require('../db');
 
 const requireToken = async (req, res, next) => {
   try {
-    console.log('headers-->', req.headers)
     const token = req.headers.authorization;
     const user = await User.findByToken(token);
     req.user = user;
@@ -14,7 +13,7 @@ const requireToken = async (req, res, next) => {
 
 const isAdmin = (req, res, next) => {
   if (!req.user.isAdmin) {
-    res.status(403).send("You shall not pass!");
+    res.status(403).send('You shall not pass!');
   } else {
     next();
   }
