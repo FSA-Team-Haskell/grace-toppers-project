@@ -7,7 +7,7 @@ import { me } from './store';
 import SingleProduct from './components/SingleProduct';
 
 // import {AccountInfo} from './components/AccountInfo';
-import { Cart } from './components/Cart';
+import Cart from './components/Cart';
 
 /**
  * COMPONENT

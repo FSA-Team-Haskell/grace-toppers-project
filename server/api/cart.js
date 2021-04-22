@@ -1,9 +1,10 @@
 const router = require('express').Router()
 const { Cart , Product , User , Order } = require('../db')
+const { requireToken } = require('./gatekeepingMiddleware');
 
-router.get('/', async (req,res, next)=>{
+router.get('/', requireToken, async (req,res, next)=>{
     try{
-        const userId = req.headers.userid //may need to change to camel case
+        const userId = req.user.id
         const productsInCart = await Cart.findAll({
             where: {
                 isPurchased: false,
@@ -26,6 +27,16 @@ router.get('/', async (req,res, next)=>{
     }
   })
 
-
+router.post('/', requireToken, async (req, res, next) => {
+    try {
+        const productId = req.body.productId;
+        const newCartItem = await Cart.create({ isPurchased: false});
+        await newCartItem.setUser(req.user);
+        await newCartItem.setProduct(await Product.findByPk(productId));
+        res.send(newCartItem);
+    } catch (error) {
+        next(error)
+    }
+})
 
 module.exports = router

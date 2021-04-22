@@ -1,6 +1,7 @@
 import React from 'react';
 import {getSingleProduct} from '../store/singleProduct'
 import {connect} from 'react-redux'
+import axios from 'axios'
 
 const product = {
     id: 1,
@@ -28,8 +29,16 @@ export class SingleProduct extends React.Component {
         })
     }
 
-    handleClick(){
-        console.log('added to cart!') //update with actual funciton to add to cart
+    async handleClick(productId){
+        console.log('productId-->', productId)
+        const token = window.localStorage.getItem("token");
+        const sendData = {
+          headers: {
+            authorization: token
+          },
+        };
+        console.log('token-->', token)
+        await axios.post(`/api/cart/`, {productId}, sendData);
     }
 
     render() {
@@ -41,7 +50,7 @@ export class SingleProduct extends React.Component {
                 <p>${product.price / 100}</p>
                 <p>{product.description}</p>
                 <p>Rating: {product.rating}/5</p>
-                <button type='button' onClick={this.handleClick} >Add to cart</button>
+                <button type='button' onClick={() => this.handleClick(product.id)} >Add to cart</button>
             </div>
         )
     }

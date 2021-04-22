@@ -10,12 +10,6 @@ export const setProducts = products => ({
 export const fetchProducts = () => {
   return async dispatch => {
     try {
-      const token = window.localStorage.getItem("token");
-      const sendData = {
-        headers: {
-          authorization: token,
-        },
-      };
       const { data: products } = await axios.get("/api/products");
       dispatch(setProducts(products));
     } catch (error) {

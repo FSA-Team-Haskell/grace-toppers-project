@@ -3,27 +3,19 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchCart } from '../store/cart';
 
-let cart = [
-  {
-    id: 1,
-    title: 'tophat',
-    price: 5000,
-    pictureURL:
-      'https://images-na.ssl-images-amazon.com/images/I/61BBPX8VzYL._AC_UX569_.jpg',
-  },
-];
-
 export class Cart extends React.Component {
   constructor() {
     super();
   }
-  // componentDidMount() {
-  //   this.props.getCart();
-  // }
+  componentDidMount() {
+    this.props.getCart();
+  }
   render() {
-    // if (!this.props.cart.length) {
-    //   return <div>Cart is empty</div>;
-    // }
+    if (!this.props.cart.length) {
+      return <div>Cart is empty</div>;
+    }
+    const cart = this.props.cart;
+    //add total cost view
     return (
       <div>
         {cart.map((product) => (

@@ -10,13 +10,15 @@ export const setCart = (cart) => ({
 export const fetchCart = () => {
   return async (dispatch) => {
     try {
-      const { data: cart } = await axios.get('/api/cart', {
+      const token = window.localStorage.getItem("token");
+      const sendData = {
         headers: {
-          authorization: token,
-          userId: 1, //Eventually fetch real userID
+          authorization: token
         },
-      });
+      };
+      const { data: cart } = await axios.get('/api/cart', sendData);
       dispatch(setCart(cart));
+      console.log('cart data form server-->', cart)
     } catch (error) {
       console.log('Error fetching cart from server');
     }
