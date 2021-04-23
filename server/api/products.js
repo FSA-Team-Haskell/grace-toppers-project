@@ -31,7 +31,6 @@ router.delete("/:id", requireToken, isAdmin, async (req, res, next) => {
     const deletedProduct = await product.destroy();
     res.status(204);
   } catch (error) {
-    console.log("delete product ERROR-->", error);
     next(error);
   }
 });
@@ -43,7 +42,6 @@ router.post("/", requireToken, isAdmin, async (req, res, next) => {
     const newProduct = await Product.create(productJson);
     res.status(200).send(newProduct);
   } catch (error) {
-    console.log("PUT product ERROR-->", error);
     next(error);
   }
 });
@@ -56,7 +54,6 @@ router.put("/", requireToken, isAdmin, async (req, res, next) => {
     const updatedProduct = await product.update(productJson);
     res.status(200).send(updatedProduct);
   } catch (error) {
-    console.log("PUT product ERROR-->", error);
     next(error);
   }
 });
