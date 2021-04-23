@@ -40,3 +40,13 @@ form div {
   position: relative;
   background-color: white;
 }
+
+#cart-items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+}
+a {
+  color: black;
+}
