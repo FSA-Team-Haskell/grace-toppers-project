@@ -1,7 +1,7 @@
-const Sequelize = require('sequelize');
-const db = require('../db');
+const Sequelize = require("sequelize");
+const db = require("../db");
 
-const Product = db.define('product', {
+const Product = db.define("product", {
   title: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -20,13 +20,13 @@ const Product = db.define('product', {
   pictureURL: {
     type: Sequelize.TEXT,
     allowNull: false,
-    defaultValue: 'https://www.dia.org/sites/default/files/No_Img_Avail.jpg',
+    defaultValue: "https://www.dia.org/sites/default/files/No_Img_Avail.jpg",
   },
   rating: {
     type: Sequelize.INTEGER,
     validate: {
       max: 5,
-      max: 0,
+      min: 0,
     },
   },
   stock: {

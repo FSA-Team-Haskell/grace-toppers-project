@@ -1,7 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { destoryCart, fetchCart, _updateCart } from '../store/cart';
+import React from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { destoryCart, fetchCart, _updateCart } from "../store/cart";
 
 export class Cart extends React.Component {
   constructor() {
@@ -43,54 +43,57 @@ export class Cart extends React.Component {
       return accum;
     }, 0);
     return (
-      <div>
-        {cart.map(({ product, cartId, quantityInCart }, index) => {
-          this.newState = product.price * quantityInCart;
-          return (
-            <div key={index}>
-              <Link to={`/products/${product.id}`}>
-                <img className="hatPic" src={product.pictureURL} />
-                <h1>{product.title}</h1>
-              </Link>
-              <p>${product.price / 100}</p>
-              <label htmlFor="quantity">Quantity:</label>
-              <input
-                name="quantity"
-                type="number"
-                id={cartId}
-                value={quantityInCart}
-                placeholder={quantityInCart}
-                onChange={this.handleChange}
-              />
-              <br />
-              <br />
-              <button
-                type="button"
-                onClick={() => this.handleDelete(product.id)}
-              >
-                Remove from cart
-              </button>
-            </div>
-          );
-        })}
-        <br />
+      <React.Fragment>
         <div id="total">
           <strong>Total: ${total / 100}</strong>
         </div>
-      </div>
+        <div id="cart-items">
+          {cart.map(({ product, cartId, quantityInCart }, index) => {
+            this.newState = product.price * quantityInCart;
+            return (
+              <div key={index}>
+                <Link to={`/products/${product.id}`}>
+                  <img className="hatPic" src={product.pictureURL} />
+                  <h1>{product.title}</h1>
+                </Link>
+                <p>${product.price / 100}</p>
+                <label htmlFor="quantity">Quantity:</label>
+                <input
+                  name="quantity"
+                  type="number"
+                  min="0"
+                  id={cartId}
+                  value={quantityInCart}
+                  placeholder={quantityInCart}
+                  onChange={this.handleChange}
+                />
+                <br />
+                <br />
+                <button
+                  type="button"
+                  onClick={() => this.handleDelete(product.id)}
+                >
+                  Remove from cart
+                </button>
+              </div>
+            );
+          })}
+          <br />
+        </div>
+      </React.Fragment>
     );
   }
 }
 
-const mapDispatch = (dispatch) => {
+const mapDispatch = dispatch => {
   return {
     getCart: () => dispatch(fetchCart()),
-    deleteItem: (id) => dispatch(destoryCart(id)),
+    deleteItem: id => dispatch(destoryCart(id)),
     updateItem: (quantity, id) => dispatch(_updateCart(quantity, id)),
   };
 };
 
-const mapState = (state) => {
+const mapState = state => {
   return {
     cart: state.cart,
   };
