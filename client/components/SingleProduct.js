@@ -41,16 +41,23 @@ export class SingleProduct extends React.Component {
 
   render() {
     const { product } = this.state;
+    let ratingHtml = []
+    for (let i=1; i <= product.rating; i++){
+      ratingHtml.push(<img id='star' src="https://img.icons8.com/material-outlined/48/000000/filled-star.png"/>)
+    }
     return (
-      <div>
+      <div id='singleProduct'>
+
+        <img className="hatPic" src={product.pictureURL} id="product-image" />
+        <div id='description'>
         <h1>{product.title}</h1>
-        <img className="hatPic" src={product.pictureURL} />
-        <p>${product.price / 100}</p>
+        <p className='price'>${product.price / 100}</p>
         <p>{product.description}</p>
-        <p>Rating: {product.rating}/5</p>
-        <button type="button" onClick={() => this.handleClick(product.id)}>
+        <p id='rating'>Rating: {ratingHtml[0] ? ratingHtml.map(star=>star): 'No Ratings'}</p>
+        <button type="button" className='single-page-delete' onClick={() => this.handleClick(product.id)}>
           Add to cart
         </button>
+        </div>
       </div>
     );
   }
