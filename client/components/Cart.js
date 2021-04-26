@@ -71,7 +71,7 @@ export class Cart extends React.Component {
                   type="number"
                   min="0"
                   id={cartId}
-                  value={quantityInCart}
+                  //value={quantityInCart}
                   placeholder={quantityInCart}
                   onChange={this.handleChange}
                 />
