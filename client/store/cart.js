@@ -3,6 +3,7 @@ import axios from 'axios';
 const SET_CART = 'SET_CART';
 const DELETE_CART = 'DELETE_CART';
 const UPDATE_CART = 'UPDATE_CART';
+const CHECKED_OUT = 'CHECKED_OUT';
 
 export const setCart = (cart) => ({
   type: SET_CART,
@@ -18,6 +19,10 @@ export const updateCart = (quantity, id) => ({
   type: UPDATE_CART,
   quantity,
   id,
+});
+
+export const checkedOut = (cart) => ({
+  type: CHECKED_OUT,
 });
 
 export const fetchCart = () => {
@@ -75,6 +80,26 @@ export const _updateCart = (quantity, id) => {
   };
 };
 
+export const checkout = (cart) => {
+  return async (dispatch) => {
+    try {
+      const token = window.localStorage.getItem('token');
+      const sendData = {
+        headers: {
+          authorization: token,
+        },
+      };
+      const body = {
+        cart: cart,
+      };
+      await axios.put(`/api/checkout`, body, sendData);
+      dispatch(checkedOut(cart));
+    } catch (error) {
+      console.log('Error during checkout!');
+    }
+  }
+}
+
 export default function cart(cart = [], action) {
   switch (action.type) {
     case SET_CART:
@@ -88,6 +113,8 @@ export default function cart(cart = [], action) {
         }
         return product;
       });
+    case CHECKED_OUT:
+      return [];
     default:
       return cart;
   }

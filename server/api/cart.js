@@ -74,4 +74,27 @@ router.delete('/:id', requireToken, async (req, res, next) => {
   }
 });
 
+// PUT /api/checkout/
+router.put('/checkout', requireToken, async (req, res, next) => {
+  try {
+    const newOrder = await Order.create();
+    const { cart } = req.body;
+    for (let item of cart) {
+
+      const cartLineItem =  await Cart.findOne({
+        where: { id: item.cartId },
+        include: [ Product ],
+      });
+
+      const cartUpdate = {
+        isPurchased: true,
+        quantity: cartLineItem.Product.stock - item.quantityInCart
+      }
+      await Cart.update(cartUpdate);
+    }
+  } catch (error) {
+    next(error)
+  }
+})
+
 module.exports = router;
