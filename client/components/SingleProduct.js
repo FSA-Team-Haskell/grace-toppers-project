@@ -14,18 +14,11 @@ export class SingleProduct extends React.Component {
   }
 
   async componentDidMount() {
-    if (this.props.isLoggedIn) {
-      this.props.getCart();
-      await this.props.getProduct(this.props.match.params.productId);
-      this.setState({
-        product: this.props.singleProduct,
-      });
-    } else {
-      await this.props.getProduct(this.props.match.params.productId);
-      this.setState({
-        product: this.props.singleProduct,
-      });
-    }
+    this.props.getCart();
+    await this.props.getProduct(this.props.match.params.productId);
+    this.setState({
+      product: this.props.singleProduct,
+    });
   }
 
   async handleClick(productId) {
@@ -47,16 +40,16 @@ export class SingleProduct extends React.Component {
       this.props.getCart();
       window.alert('Added to cart!');
     } else {
+      let cart = [];
+      if (localStorage.getItem('cart')) {
+        cart = JSON.parse(localStorage.getItem('cart'));
+      }
       const check = this.props.cart.filter((item) => {
         return item.product.id === productId;
       });
       if (check[0]) {
         window.alert('Item already in cart!');
         return;
-      }
-      let cart = [];
-      if (localStorage.getItem('cart')) {
-        cart = JSON.parse(localStorage.getItem('cart'));
       }
       cart.push({
         product: {
@@ -78,22 +71,33 @@ export class SingleProduct extends React.Component {
 
   render() {
     const { product } = this.state;
-    let ratingHtml = []
-    for (let i=1; i <= product.rating; i++){
-      ratingHtml.push(<img id='star' src="https://img.icons8.com/material-outlined/48/000000/filled-star.png"/>)
+    let ratingHtml = [];
+    for (let i = 1; i <= product.rating; i++) {
+      ratingHtml.push(
+        <img
+          id="star"
+          src="https://img.icons8.com/material-outlined/48/000000/filled-star.png"
+        />
+      );
     }
     return (
-      <div id='singleProduct'>
-
+      <div id="singleProduct">
         <img className="hatPic" src={product.pictureURL} id="product-image" />
-        <div id='description'>
-        <h1>{product.title}</h1>
-        <p className='price'>${product.price / 100}</p>
-        <p>{product.description}</p>
-        <p id='rating'>Rating: {ratingHtml[0] ? ratingHtml.map(star=>star): 'No Ratings'}</p>
-        <button type="button" className='single-page-delete' onClick={() => this.handleClick(product.id)}>
-          Add to cart
-        </button>
+        <div id="description">
+          <h1>{product.title}</h1>
+          <p className="price">${product.price / 100}</p>
+          <p>{product.description}</p>
+          <p id="rating">
+            Rating:{' '}
+            {ratingHtml[0] ? ratingHtml.map((star) => star) : 'No Ratings'}
+          </p>
+          <button
+            type="button"
+            className="single-page-delete"
+            onClick={() => this.handleClick(product.id)}
+          >
+            Add to cart
+          </button>
         </div>
       </div>
     );
