@@ -1,16 +1,16 @@
-import axios from 'axios';
+import axios from "axios";
 
-const SET_CART = 'SET_CART';
-const DELETE_CART = 'DELETE_CART';
-const UPDATE_CART = 'UPDATE_CART';
-const CHECKED_OUT = 'CHECKED_OUT';
+const SET_CART = "SET_CART";
+const DELETE_CART = "DELETE_CART";
+const UPDATE_CART = "UPDATE_CART";
+const CHECKED_OUT = "CHECKED_OUT";
 
-export const setCart = (cart) => ({
+export const setCart = cart => ({
   type: SET_CART,
   cart,
 });
 
-export const deleteCart = (id) => ({
+export const deleteCart = id => ({
   type: DELETE_CART,
   id,
 });
@@ -21,31 +21,31 @@ export const updateCart = (quantity, id) => ({
   id,
 });
 
-export const checkedOut = (cart) => ({
+export const checkedOut = cart => ({
   type: CHECKED_OUT,
 });
 
 export const fetchCart = () => {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
-      const token = window.localStorage.getItem('token');
+      const token = window.localStorage.getItem("token");
       const sendData = {
         headers: {
           authorization: token,
         },
       };
-      const { data: cart } = await axios.get('/api/cart', sendData);
+      const { data: cart } = await axios.get("/api/cart", sendData);
       dispatch(setCart(cart));
     } catch (error) {
-      console.log('Error fetching cart from server');
+      console.log("Error fetching cart from server");
     }
   };
 };
 
-export const destoryCart = (id) => {
-  return async (dispatch) => {
+export const destoryCart = id => {
+  return async dispatch => {
     try {
-      const token = window.localStorage.getItem('token');
+      const token = window.localStorage.getItem("token");
       const sendData = {
         headers: {
           authorization: token,
@@ -54,15 +54,15 @@ export const destoryCart = (id) => {
       await axios.delete(`/api/cart/${id}`, sendData);
       dispatch(deleteCart(id));
     } catch (error) {
-      console.log('Error deleting');
+      console.log("Error deleting");
     }
   };
 };
 
 export const _updateCart = (quantity, id) => {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
-      const token = window.localStorage.getItem('token');
+      const token = window.localStorage.getItem("token");
       const sendData = {
         headers: {
           authorization: token,
@@ -75,15 +75,15 @@ export const _updateCart = (quantity, id) => {
       await axios.put(`/api/cart`, body, sendData);
       dispatch(updateCart(quantity, id));
     } catch (error) {
-      console.log('Error updating');
+      console.log("Error updating");
     }
   };
 };
 
-export const checkout = (cart) => {
-  return async (dispatch) => {
+export const checkout = cart => {
+  return async dispatch => {
     try {
-      const token = window.localStorage.getItem('token');
+      const token = window.localStorage.getItem("token");
       const sendData = {
         headers: {
           authorization: token,
@@ -92,22 +92,22 @@ export const checkout = (cart) => {
       const body = {
         cart: cart,
       };
-      await axios.put(`/api/checkout`, body, sendData);
+      await axios.put(`/api/cart/checkout/`, body, sendData);
       dispatch(checkedOut(cart));
     } catch (error) {
-      console.log('Error during checkout!');
+      console.log("Error during checkout!\n", error);
     }
-  }
-}
+  };
+};
 
 export default function cart(cart = [], action) {
   switch (action.type) {
     case SET_CART:
       return action.cart;
     case DELETE_CART:
-      return cart.filter((item) => item.product.id !== Number(action.id));
+      return cart.filter(item => item.product.id !== Number(action.id));
     case UPDATE_CART:
-      return cart.map((product) => {
+      return cart.map(product => {
         if (product.cartId === Number(action.id)) {
           product.quantityInCart = action.quantity;
         }
