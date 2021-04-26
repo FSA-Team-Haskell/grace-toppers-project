@@ -1,17 +1,17 @@
 import axios from "axios";
 import history from "../history";
 
-const SET_CART = "SET_CART";
-const DELETE_CART = "DELETE_CART";
-const UPDATE_CART = "UPDATE_CART";
-const CHECKED_OUT = "CHECKED_OUT";
+const SET_CART = 'SET_CART';
+const DELETE_CART = 'DELETE_CART';
+const UPDATE_CART = 'UPDATE_CART';
+const CHECKED_OUT = 'CHECKED_OUT';
 
-export const setCart = cart => ({
+export const setCart = (cart) => ({
   type: SET_CART,
   cart,
 });
 
-export const deleteCart = id => ({
+export const deleteCart = (id) => ({
   type: DELETE_CART,
   id,
 });
@@ -22,69 +22,100 @@ export const updateCart = (quantity, id) => ({
   id,
 });
 
+
 export const checkedOut = () => ({
   type: CHECKED_OUT,
 });
 
 export const fetchCart = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
-      const token = window.localStorage.getItem("token");
-      const sendData = {
-        headers: {
-          authorization: token,
-        },
-      };
-      const { data: cart } = await axios.get("/api/cart", sendData);
-      dispatch(setCart(cart));
+      const token = window.localStorage.getItem('token');
+      if (token) {
+        const sendData = {
+          headers: {
+            authorization: token,
+          },
+        };
+        const { data: cart } = await axios.get('/api/cart', sendData);
+        dispatch(setCart(cart));
+      } else {
+        let cart = localStorage.getItem('cart');
+        dispatch(setCart(JSON.parse(cart)));
+      }
     } catch (error) {
-      console.log("Error fetching cart from server");
+      console.log('Error fetching cart from server');
     }
   };
 };
 
-export const destoryCart = id => {
-  return async dispatch => {
+export const destoryCart = (id) => {
+  return async (dispatch) => {
     try {
-      const token = window.localStorage.getItem("token");
-      const sendData = {
-        headers: {
-          authorization: token,
-        },
-      };
-      await axios.delete(`/api/cart/${id}`, sendData);
-      dispatch(deleteCart(id));
+      const token = window.localStorage.getItem('token');
+      if (token) {
+        const sendData = {
+          headers: {
+            authorization: token,
+          },
+        };
+        await axios.delete(`/api/cart/${id}`, sendData);
+        dispatch(deleteCart(id));
+      } else {
+        let cart = JSON.parse(localStorage.getItem('cart'));
+        localStorage.removeItem('cart');
+        let newCart = cart.filter((item) => {
+          return item.product.id !== id;
+        });
+        window.localStorage.setItem('cart', JSON.stringify(newCart));
+        dispatch(deleteCart(id));
+      }
     } catch (error) {
-      console.log("Error deleting");
+      console.log('Error deleting');
     }
   };
 };
 
 export const _updateCart = (quantity, id) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
-      const token = window.localStorage.getItem("token");
-      const sendData = {
-        headers: {
-          authorization: token,
-        },
-      };
-      const body = {
-        quantity: quantity,
-        cartId: id,
-      };
-      await axios.put(`/api/cart`, body, sendData);
-      dispatch(updateCart(quantity, id));
+      const token = window.localStorage.getItem('token');
+      if (token) {
+        const sendData = {
+          headers: {
+            authorization: token,
+          },
+        };
+        const body = {
+          quantity: quantity,
+          cartId: id,
+        };
+        await axios.put(`/api/cart`, body, sendData);
+        dispatch(updateCart(quantity, id));
+      } else {
+        console.log('quantity', quantity);
+        console.log('id-->', id);
+        let cart = JSON.parse(localStorage.getItem('cart'));
+        localStorage.removeItem('cart');
+        let newCart = cart.map((item) => {
+          if (item.cartId === Number(id)) {
+            item = { ...item, quantityInCart: Number(quantity) };
+          }
+          return item;
+        });
+        window.localStorage.setItem('cart', JSON.stringify(newCart));
+        dispatch(updateCart(Number(quantity), Number(id)));
+      }
     } catch (error) {
-      console.log("Error updating");
+      console.log('Error updating');
     }
   };
 };
 
-export const checkout = cart => {
-  return async dispatch => {
+export const checkout = (cart) => {
+  return async (dispatch) => {
     try {
-      const token = window.localStorage.getItem("token");
+      const token = window.localStorage.getItem('token');
       const sendData = {
         headers: {
           authorization: token,
@@ -98,7 +129,7 @@ export const checkout = cart => {
       dispatch(checkedOut());
       history.push("/checkout");
     } catch (error) {
-      console.log("Error during checkout!\n", error);
+      console.log('Error during checkout!\n', error);
     }
   };
 };
@@ -108,9 +139,9 @@ export default function cart(cart = [], action) {
     case SET_CART:
       return action.cart;
     case DELETE_CART:
-      return cart.filter(item => item.product.id !== Number(action.id));
+      return cart.filter((item) => item.product.id !== Number(action.id));
     case UPDATE_CART:
-      return cart.map(product => {
+      return cart.map((product) => {
         if (product.cartId === Number(action.id)) {
           product.quantityInCart = action.quantity;
         }

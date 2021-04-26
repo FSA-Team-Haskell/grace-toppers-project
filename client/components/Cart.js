@@ -1,7 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import { destoryCart, fetchCart, _updateCart, checkout } from "../store/cart";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { destoryCart, fetchCart, _updateCart, checkout } from '../store/cart';
 
 export class Cart extends React.Component {
   constructor() {
@@ -41,7 +41,7 @@ export class Cart extends React.Component {
   }
 
   render() {
-    if (!this.props.cart.length) {
+    if (!this.props.cart || !this.props.cart.length) {
       return <div>Cart is empty</div>;
     }
     const cart = this.props.cart;
@@ -95,18 +95,22 @@ export class Cart extends React.Component {
   }
 }
 
-const mapDispatch = dispatch => {
+const mapDispatch = (dispatch) => {
   return {
     getCart: () => dispatch(fetchCart()),
-    deleteItem: id => dispatch(destoryCart(id)),
+    deleteItem: (id) => dispatch(destoryCart(id)),
     updateItem: (quantity, id) => dispatch(_updateCart(quantity, id)),
-    checkout: cart => dispatch(checkout(cart)),
+    checkout: (cart) => dispatch(checkout(cart)),
+    loadInitialData() {
+      dispatch(me());
+    },
   };
 };
 
-const mapState = state => {
+const mapState = (state) => {
   return {
     cart: state.cart,
+    isLoggedIn: !!state.auth.id,
   };
 };
 

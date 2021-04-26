@@ -14,29 +14,66 @@ export class SingleProduct extends React.Component {
   }
 
   async componentDidMount() {
-    this.props.getCart();
-    await this.props.getProduct(this.props.match.params.productId);
-    this.setState({
-      product: this.props.singleProduct,
-    });
+    if (this.props.isLoggedIn) {
+      this.props.getCart();
+      await this.props.getProduct(this.props.match.params.productId);
+      this.setState({
+        product: this.props.singleProduct,
+      });
+    } else {
+      await this.props.getProduct(this.props.match.params.productId);
+      this.setState({
+        product: this.props.singleProduct,
+      });
+    }
   }
 
   async handleClick(productId) {
-    const check = this.props.cart.filter((item) => {
-      return item.product.id === productId;
-    });
-    if (check[0]) {
-      window.alert('Item already in cart!');
-      return;
+    if (this.props.isLoggedIn) {
+      const check = this.props.cart.filter((item) => {
+        return item.product.id === productId;
+      });
+      if (check[0]) {
+        window.alert('Item already in cart!');
+        return;
+      }
+      const token = window.localStorage.getItem('token');
+      const sendData = {
+        headers: {
+          authorization: token,
+        },
+      };
+      await axios.post(`/api/cart/`, { productId }, sendData);
+      this.props.getCart();
+      window.alert('Added to cart!');
+    } else {
+      const check = this.props.cart.filter((item) => {
+        return item.product.id === productId;
+      });
+      if (check[0]) {
+        window.alert('Item already in cart!');
+        return;
+      }
+      let cart = [];
+      if (localStorage.getItem('cart')) {
+        cart = JSON.parse(localStorage.getItem('cart'));
+      }
+      cart.push({
+        product: {
+          id: this.state.product.id,
+          pictureURL: this.state.product.pictureURL,
+          price: this.state.product.price,
+          rating: this.state.product.rating,
+          stock: this.state.product.stock,
+          title: this.state.product.title,
+        },
+        quantityInCart: 1,
+        cartId: Number(this.state.product.id),
+      });
+      localStorage.setItem('cart', JSON.stringify(cart));
+      this.props.getCart();
+      window.alert('Added to cart!');
     }
-    const token = window.localStorage.getItem('token');
-    const sendData = {
-      headers: {
-        authorization: token,
-      },
-    };
-    await axios.post(`/api/cart/`, { productId }, sendData);
-    window.alert('Added to cart!');
   }
 
   render() {
@@ -67,6 +104,7 @@ const mapState = (state) => {
   return {
     singleProduct: state.singleProduct,
     cart: state.cart,
+    isLoggedIn: !!state.auth.id,
   };
 };
 
@@ -74,6 +112,9 @@ const mapDispatch = (dispatch) => {
   return {
     getCart: () => dispatch(fetchCart()),
     getProduct: (id) => dispatch(getSingleProduct(id)),
+    loadInitialData() {
+      dispatch(me());
+    },
   };
 };
 
