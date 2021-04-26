@@ -1,5 +1,5 @@
-import axios from "axios";
-import history from "../history";
+import axios from 'axios';
+import history from '../history';
 
 const SET_CART = 'SET_CART';
 const DELETE_CART = 'DELETE_CART';
@@ -21,7 +21,6 @@ export const updateCart = (quantity, id) => ({
   quantity,
   id,
 });
-
 
 export const checkedOut = () => ({
   type: CHECKED_OUT,
@@ -93,8 +92,6 @@ export const _updateCart = (quantity, id) => {
         await axios.put(`/api/cart`, body, sendData);
         dispatch(updateCart(quantity, id));
       } else {
-        console.log('quantity', quantity);
-        console.log('id-->', id);
         let cart = JSON.parse(localStorage.getItem('cart'));
         localStorage.removeItem('cart');
         let newCart = cart.map((item) => {
@@ -116,18 +113,24 @@ export const checkout = (cart) => {
   return async (dispatch) => {
     try {
       const token = window.localStorage.getItem('token');
-      const sendData = {
-        headers: {
-          authorization: token,
-        },
-      };
-      const body = {
-        cart: cart,
-      };
+      if (token) {
+        const sendData = {
+          headers: {
+            authorization: token,
+          },
+        };
+        const body = {
+          cart: cart,
+        };
 
-      await axios.put(`/api/cart/checkout/`, body, sendData);
-      dispatch(checkedOut());
-      history.push("/checkout");
+        await axios.put(`/api/cart/checkout/`, body, sendData);
+        dispatch(checkedOut());
+        history.push('/checkout');
+      } else {
+        localStorage.removeItem('cart');
+        localStorage.setItem('cart', JSON.stringify([]));
+        history.push('/checkout');
+      }
     } catch (error) {
       console.log('Error during checkout!\n', error);
     }

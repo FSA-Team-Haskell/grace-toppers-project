@@ -22,8 +22,17 @@ export class Cart extends React.Component {
   }
 
   handleCheckout(evt) {
+    console.log(this.props.cart);
+    for (let i = 0; i < this.props.cart.length; i++) {
+      if (
+        !this.props.cart[i].quantityInCart ||
+        this.props.cart[i].quantityInCart === '0'
+      ) {
+        window.alert('Item with quantity 0 in cart - please update or remove.');
+        return;
+      }
+    }
     if (!this.props.cart.length) return;
-
     this.props.checkout(this.props.cart);
   }
 
@@ -53,16 +62,18 @@ export class Cart extends React.Component {
       <React.Fragment>
         <div id="total">
           <strong>Total: ${total / 100}</strong>
-          <button onClick={this.handleCheckout} id="checkout">Checkout</button>
+          <button onClick={this.handleCheckout} id="checkout">
+            Checkout
+          </button>
         </div>
         <div id="cart-items">
           {cart.map(({ product, cartId, quantityInCart }, index) => {
             this.newState = product.price * quantityInCart;
             return (
-              <div key={index} id='item'>
+              <div key={index} id="item">
                 <Link to={`/products/${product.id}`}>
                   <img className="hatPic" src={product.pictureURL} />
-                  <h1 id='title'>{product.title}</h1>
+                  <h1 id="title">{product.title}</h1>
                 </Link>
                 <p>${product.price / 100}</p>
                 <label htmlFor="quantity">Quantity:</label>
@@ -79,7 +90,7 @@ export class Cart extends React.Component {
                 <br />
                 <button
                   type="button"
-                  id='delete'
+                  id="delete"
                   onClick={() => this.handleDelete(product.id)}
                 >
                   Remove from cart

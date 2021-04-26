@@ -5,7 +5,7 @@ import { Login, Signup } from './components/AuthForm';
 import Home from './components/home';
 import { me } from './store';
 import SingleProduct from './components/SingleProduct';
-import CheckOutPage from './components/CheckOutPage'
+import CheckOutPage from './components/CheckOutPage';
 
 // import {AccountInfo} from './components/AccountInfo';
 import Cart from './components/Cart';
@@ -47,6 +47,7 @@ class Routes extends Component {
               path="/products/:productId"
               component={SingleProduct}
             />
+            <Route path="/checkout" component={CheckOutPage} />
             <Route path="/cart" component={Cart} />
             <Redirect to="/products" />
           </Switch>
