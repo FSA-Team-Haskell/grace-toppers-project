@@ -1,13 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { destoryCart, fetchCart, _updateCart } from "../store/cart";
+import { destoryCart, fetchCart, _updateCart, checkout } from "../store/cart";
 
 export class Cart extends React.Component {
   constructor() {
     super();
     this.handleDelete = this.handleDelete.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleCheckout = this.handleCheckout.bind(this);
   }
   componentDidMount() {
     this.props.getCart();
@@ -18,6 +19,12 @@ export class Cart extends React.Component {
     //   },
     //   0
     // );
+  }
+
+  handleCheckout(evt) {
+    if (!this.props.cart.length) return;
+
+    this.props.checkout(this.props.cart);
   }
 
   handleDelete(id) {
@@ -46,6 +53,7 @@ export class Cart extends React.Component {
       <React.Fragment>
         <div id="total">
           <strong>Total: ${total / 100}</strong>
+          <button onClick={this.handleCheckout}>Checkout</button>
         </div>
         <div id="cart-items">
           {cart.map(({ product, cartId, quantityInCart }, index) => {
@@ -90,6 +98,7 @@ const mapDispatch = dispatch => {
     getCart: () => dispatch(fetchCart()),
     deleteItem: id => dispatch(destoryCart(id)),
     updateItem: (quantity, id) => dispatch(_updateCart(quantity, id)),
+    checkout: cart => dispatch(checkout(cart)),
   };
 };
 

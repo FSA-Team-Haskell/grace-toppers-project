@@ -1,8 +1,8 @@
-const router = require('express').Router();
-const { Cart, Product, User, Order } = require('../db');
-const { requireToken } = require('./gatekeepingMiddleware');
+const router = require("express").Router();
+const { Cart, Product, User, Order } = require("../db");
+const { requireToken } = require("./gatekeepingMiddleware");
 
-router.get('/', requireToken, async (req, res, next) => {
+router.get("/", requireToken, async (req, res, next) => {
   try {
     const userId = req.user.id;
     const productsInCart = await Cart.findAll({
@@ -30,7 +30,7 @@ router.get('/', requireToken, async (req, res, next) => {
 });
 
 //POST /api/cart
-router.post('/', requireToken, async (req, res, next) => {
+router.post("/", requireToken, async (req, res, next) => {
   try {
     const productId = req.body.productId;
     const newCartItem = await Cart.create({ isPurchased: false });
@@ -43,7 +43,7 @@ router.post('/', requireToken, async (req, res, next) => {
 });
 
 //PUT /api/cart/
-router.put('/', requireToken, async (req, res, next) => {
+router.put("/", requireToken, async (req, res, next) => {
   try {
     const cartId = req.body.cartId;
     const quantity = req.body.quantity;
@@ -58,7 +58,7 @@ router.put('/', requireToken, async (req, res, next) => {
 });
 
 // DELETE /api/cart/:id
-router.delete('/:id', requireToken, async (req, res, next) => {
+router.delete("/:id", requireToken, async (req, res, next) => {
   try {
     const cart = await Cart.findAll({
       where: {
@@ -69,6 +69,38 @@ router.delete('/:id', requireToken, async (req, res, next) => {
     });
     await cart[0].destroy();
     res.send(cart[0]);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// PUT /api/cart/checkout/
+router.put("/checkout", requireToken, async (req, res, next) => {
+  try {
+    const newOrder = await Order.create();
+    const orderId = newOrder.id
+    let totalCost = 0
+    const { cart } = req.body;
+    for (let item of cart) {
+      totalCost += item.product.price
+      const cartLineItem = await Cart.findOne({
+        where: { id: item.cartId },
+        include: [Product],
+      });
+      console.log()
+      const cartUpdate = {
+        isPurchased: true,
+        quantity: item.quantityInCart,
+        orderId
+      };
+      await cartLineItem.update(cartUpdate);
+      const product = await Product.findByPk(item.product.id)
+      await product.update({stock: product.stock- item.quantityInCart})
+    }
+    totalCost = totalCost/100
+
+    await newOrder.update({totalCost: totalCost})
+
   } catch (error) {
     next(error);
   }
