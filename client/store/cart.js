@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios from "axios";
+import history from "../history";
 
 const SET_CART = 'SET_CART';
 const DELETE_CART = 'DELETE_CART';
@@ -21,7 +22,8 @@ export const updateCart = (quantity, id) => ({
   id,
 });
 
-export const checkedOut = (cart) => ({
+
+export const checkedOut = () => ({
   type: CHECKED_OUT,
 });
 
@@ -122,8 +124,10 @@ export const checkout = (cart) => {
       const body = {
         cart: cart,
       };
+
       await axios.put(`/api/cart/checkout/`, body, sendData);
-      dispatch(checkedOut(cart));
+      dispatch(checkedOut());
+      history.push("/checkout");
     } catch (error) {
       console.log('Error during checkout!\n', error);
     }

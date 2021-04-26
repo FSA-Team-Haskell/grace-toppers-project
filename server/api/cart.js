@@ -97,10 +97,9 @@ router.put("/checkout", requireToken, async (req, res, next) => {
       const product = await Product.findByPk(item.product.id)
       await product.update({stock: product.stock- item.quantityInCart})
     }
-    totalCost = totalCost/100
-
-    await newOrder.update({totalCost: totalCost})
-
+    totalCost = totalCost
+    await newOrder.update({totalCost})
+    res.status(200).send()
   } catch (error) {
     next(error);
   }

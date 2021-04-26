@@ -23,6 +23,7 @@ form div {
 .hatPic {
   width: 150px;
   height: 150px;
+  /* background-color: lightgrey; */
 }
 
 #all-products {
@@ -38,15 +39,119 @@ form div {
   margin: 1rem;
   opacity: 80%;
   position: relative;
-  background-color: white;
+
+}
+#item-dec{
+  height: fit-content;
+  width: 160px;
+  max-width: 160px;
 }
 
 #cart-items {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
   width: 100%;
 }
 a {
   color: black;
+}
+
+#item{
+  margin: 1rem;
+
+}
+#title{
+  font-size: 20px;
+}
+#checkout{
+  margin-left: 20px;
+  height: 30px;
+  width: 150px;
+  background-color: #e0921f;
+  border: none;
+  border-radius: 10px;
+}
+#checkout:hover{
+  cursor: pointer;
+  background-color: #f6d892;
+}
+
+#delete{
+  height: 30px;
+  width: 100%;
+  background-color: #d00d10;
+  color: white;
+  border-radius: 10px;
+  border: none
+}
+#delete:hover{
+  background-color: red;
+  cursor: pointer;
+}
+
+.single-page-delete{
+  height: 30px;
+  width: 150px;
+  background-color: #d00d10;
+  color: white;
+  border-radius: 10px;
+  border: none
+}
+
+.single-page-delete:hover{
+  background-color: red;
+  cursor: pointer;
+}
+
+.quantity-input{
+  margin-top: 10px;
+  height: 20px;
+  width: 100%;
+  margin-left: auto;
+}
+/* login */
+#login{
+  display: flex;
+  flex-direction: column;
+}
+
+/* checkouted page */
+#checkedout-body{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#checkedOut{
+  font-size: 25px;
+}
+
+/* singleProduct */
+#singleProduct{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  margin: 20px;
+}
+#product-image{
+  height: 250px;
+  width: 250px;
+}
+
+#description{
+  margin-left: 20px;
+}
+
+.price{
+  font-size: 24px;
+}
+
+#star{
+  height: 20px;
+  width: 20px;
+  margin-left: 4px;
+}
+#rating{
+  display: flex;
 }
