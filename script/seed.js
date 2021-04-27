@@ -15,7 +15,7 @@ const products = [
     price: 10000,
     pictureURL:
       'https://cdn.shopify.com/s/files/1/0939/7260/products/Top_Hat00526_2048x.jpg?v=1527557961',
-    rating: 0,
+    rating: 5,
     stock: 250,
   },
   {
@@ -24,7 +24,7 @@ const products = [
     price: 2500,
     pictureURL:
       'https://www.jcrew.com/s7-img-facade/L2241_BL8133?$pdp_enlarge$',
-    rating: 0,
+    rating: 2,
     stock: 1000,
   },
   {
@@ -42,7 +42,7 @@ const products = [
     price: 1500,
     pictureURL:
       'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR3Hgl9DWse7J0k3V_grMbdcSCinz2UFhijtR2tWjyy9h5UwhvY3rdEzi1ENCR3Ybv75tb4RqmusVH8p-ef83PwJ0MKlYavjjtGGftw-b8pmJsW7bnKKWzlgQ&usqp=CAE',
-    rating: 0,
+    rating: 5,
     stock: 1250,
   },
   {
@@ -51,7 +51,7 @@ const products = [
     price: 2000,
     pictureURL:
       'https://images-na.ssl-images-amazon.com/images/I/41Cqe9LdgcL._AC_.jpg',
-    rating: 0,
+    rating: 3,
     stock: 1500,
   },
   {
@@ -60,7 +60,7 @@ const products = [
     price: 5000,
     pictureURL:
       'https://images-na.ssl-images-amazon.com/images/I/61BBPX8VzYL._AC_UX569_.jpg',
-    rating: 0,
+    rating: 1,
     stock: 1000,
   },
 ];
