@@ -77,12 +77,14 @@ router.delete("/:id", requireToken, async (req, res, next) => {
 // PUT /api/cart/checkout/
 router.put("/checkout", requireToken, async (req, res, next) => {
   try {
+    const userId = req.user.id;
     const newOrder = await Order.create();
+    await newOrder.setUser(await User.findByPk(userId));
     const orderId = newOrder.id
     let totalCost = 0
     const { cart } = req.body;
     for (let item of cart) {
-      totalCost += item.product.price
+      totalCost += (item.product.price * item.quantityInCart);
       const cartLineItem = await Cart.findOne({
         where: { id: item.cartId },
         include: [Product],
