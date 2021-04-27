@@ -40,6 +40,21 @@ form div {
   opacity: 80%;
   position: relative;
 }
+
+#pop-up {
+  margin-left: 50%;
+  height: 40px;
+  right: 50%;
+  width: 150px;
+  background-color: green;
+  opacity: 80%;
+  text-align: center;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
 #item-dec {
   height: fit-content;
   width: 160px;
@@ -132,6 +147,7 @@ a {
   height: 100%;
   display: flex;
   margin: 20px;
+  position: relative;
 }
 #product-image {
   height: 250px;
