@@ -75,7 +75,8 @@ a {
 }
 
 .selected {
-  background-color: hotpink;
+  /* background-color: hotpink; */
+  color: goldenrod;
 }
 
 #item {
