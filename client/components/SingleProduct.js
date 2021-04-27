@@ -1,21 +1,30 @@
-import React from "react";
-import { getSingleProduct } from "../store/singleProduct";
-import { connect } from "react-redux";
-import axios from "axios";
-import { destoryCart, fetchCart, _updateCart } from "../store/cart";
+import React from 'react';
+import { getSingleProduct } from '../store/singleProduct';
+import { connect } from 'react-redux';
+import axios from 'axios';
+import { destoryCart, fetchCart, _updateCart } from '../store/cart';
 
 export class SingleProduct extends React.Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
+    this.handlePopup = this.handlePopup.bind(this);
     this.state = {
       product: {},
     };
   }
 
+  handlePopup() {
+    const popup = document.getElementById('pop-up');
+    popup.style.display = 'flex';
+    setTimeout(() => {
+      popup.style.display = 'none';
+    }, 3001);
+  }
+
   async componentDidMount() {
-    if (!localStorage.getItem("cart")) {
-      localStorage.setItem("cart", JSON.stringify([]));
+    if (!localStorage.getItem('cart')) {
+      localStorage.setItem('cart', JSON.stringify([]));
     }
 
     this.props.getCart();
@@ -27,14 +36,14 @@ export class SingleProduct extends React.Component {
 
   async handleClick(productId) {
     if (this.props.isLoggedIn) {
-      const check = this.props.cart.filter(item => {
+      const check = this.props.cart.filter((item) => {
         return item.product.id === productId;
       });
       if (check[0]) {
-        window.alert("Item already in cart!");
+        window.alert('Item already in cart!');
         return;
       }
-      const token = window.localStorage.getItem("token");
+      const token = window.localStorage.getItem('token');
       const sendData = {
         headers: {
           authorization: token,
@@ -42,17 +51,17 @@ export class SingleProduct extends React.Component {
       };
       await axios.post(`/api/cart/`, { productId }, sendData);
       this.props.getCart();
-      window.alert("Added to cart!");
+      this.handlePopup();
     } else {
       let cart = [];
-      if (localStorage.getItem("cart")) {
-        cart = JSON.parse(localStorage.getItem("cart"));
+      if (localStorage.getItem('cart')) {
+        cart = JSON.parse(localStorage.getItem('cart'));
       }
-      const check = this.props.cart.filter(item => {
+      const check = this.props.cart.filter((item) => {
         return item.product.id === productId;
       });
       if (check[0]) {
-        window.alert("Item already in cart!");
+        window.alert('Item already in cart!');
         return;
       }
 
@@ -68,9 +77,9 @@ export class SingleProduct extends React.Component {
         quantityInCart: 1,
         cartId: Number(this.state.product.id),
       });
-      localStorage.setItem("cart", JSON.stringify(cart));
+      localStorage.setItem('cart', JSON.stringify(cart));
       this.props.getCart();
-      window.alert("Added to cart!");
+      window.alert('Added to cart!');
     }
   }
 
@@ -86,30 +95,33 @@ export class SingleProduct extends React.Component {
       );
     }
     return (
-      <div id="singleProduct">
-        <img className="hatPic" src={product.pictureURL} id="product-image" />
-        <div id="description">
-          <h1>{product.title}</h1>
-          <p className="price">${product.price / 100}</p>
-          <p>{product.description}</p>
-          <p id="rating">
-            Rating:{" "}
-            {ratingHtml[0] ? ratingHtml.map(star => star) : "No Ratings"}
-          </p>
-          <button
-            type="button"
-            className="single-page-delete"
-            onClick={() => this.handleClick(product.id)}
-          >
-            Add to cart
-          </button>
+      <>
+        <div id="pop-up">Added to cart</div>
+        <div id="singleProduct">
+          <img className="hatPic" src={product.pictureURL} id="product-image" />
+          <div id="description">
+            <h1>{product.title}</h1>
+            <p className="price">${product.price / 100}</p>
+            <p>{product.description}</p>
+            <p id="rating">
+              Rating:{' '}
+              {ratingHtml[0] ? ratingHtml.map((star) => star) : 'No Ratings'}
+            </p>
+            <button
+              type="button"
+              className="single-page-delete"
+              onClick={() => this.handleClick(product.id)}
+            >
+              Add to cart
+            </button>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 }
 
-const mapState = state => {
+const mapState = (state) => {
   return {
     singleProduct: state.singleProduct,
     cart: state.cart,
@@ -117,10 +129,10 @@ const mapState = state => {
   };
 };
 
-const mapDispatch = dispatch => {
+const mapDispatch = (dispatch) => {
   return {
     getCart: () => dispatch(fetchCart()),
-    getProduct: id => dispatch(getSingleProduct(id)),
+    getProduct: (id) => dispatch(getSingleProduct(id)),
     loadInitialData() {
       dispatch(me());
     },

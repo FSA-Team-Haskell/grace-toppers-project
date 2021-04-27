@@ -1,8 +1,8 @@
-const router = require("express").Router();
-const { Cart, Product, User, Order } = require("../db");
-const { requireToken } = require("./gatekeepingMiddleware");
+const router = require('express').Router();
+const { Cart, Product, User, Order } = require('../db');
+const { requireToken } = require('./gatekeepingMiddleware');
 
-router.get("/", requireToken, async (req, res, next) => {
+router.get('/', requireToken, async (req, res, next) => {
   try {
     const userId = req.user.id;
     const productsInCart = await Cart.findAll({
@@ -30,10 +30,13 @@ router.get("/", requireToken, async (req, res, next) => {
 });
 
 //POST /api/cart
-router.post("/", requireToken, async (req, res, next) => {
+router.post('/', requireToken, async (req, res, next) => {
   try {
     const productId = req.body.productId;
-    const newCartItem = await Cart.create({ isPurchased: false });
+    const newCartItem = await Cart.create({
+      isPurchased: false,
+      quantity: req.body.quantityInCart || 1,
+    });
     await newCartItem.setUser(req.user);
     await newCartItem.setProduct(await Product.findByPk(productId));
     res.send(newCartItem);
@@ -43,7 +46,7 @@ router.post("/", requireToken, async (req, res, next) => {
 });
 
 //PUT /api/cart/
-router.put("/", requireToken, async (req, res, next) => {
+router.put('/', requireToken, async (req, res, next) => {
   try {
     const cartId = req.body.cartId;
     const quantity = req.body.quantity;
@@ -58,7 +61,7 @@ router.put("/", requireToken, async (req, res, next) => {
 });
 
 // DELETE /api/cart/:id
-router.delete("/:id", requireToken, async (req, res, next) => {
+router.delete('/:id', requireToken, async (req, res, next) => {
   try {
     const cart = await Cart.findAll({
       where: {
@@ -75,7 +78,7 @@ router.delete("/:id", requireToken, async (req, res, next) => {
 });
 
 // PUT /api/cart/checkout/
-router.put("/checkout", requireToken, async (req, res, next) => {
+router.put('/checkout', requireToken, async (req, res, next) => {
   try {
     const userId = req.user.id;
     const newOrder = await Order.create();
