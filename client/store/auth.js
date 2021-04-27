@@ -33,6 +33,27 @@ export const authenticate = (email, password, method) => async dispatch => {
     const res = await axios.post(`/auth/${method}`, { email, password });
     window.localStorage.setItem(TOKEN, res.data.token);
     dispatch(me());
+    const token = window.localStorage.getItem("token");
+    const sendData = {
+      headers: {
+        authorization: token,
+      },
+    };
+    const cart = JSON.parse(localStorage.getItem("cart"));
+    if (cart) {
+      for (let i = 0; i < cart.length; i++) {
+        let item = cart[i];
+        await axios.post(
+          `/api/cart/`,
+          { productId: item.product.id },
+          sendData
+        );
+      }
+      localStorage.removeItem("cart");
+      history.push("/cart");
+      
+      return;
+    }
     history.push("/products");
   } catch (authError) {
     return dispatch(setAuth({ error: authError }));

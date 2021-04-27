@@ -1,8 +1,8 @@
-import React from 'react';
-import { getSingleProduct } from '../store/singleProduct';
-import { connect } from 'react-redux';
-import axios from 'axios';
-import { destoryCart, fetchCart, _updateCart } from '../store/cart';
+import React from "react";
+import { getSingleProduct } from "../store/singleProduct";
+import { connect } from "react-redux";
+import axios from "axios";
+import { destoryCart, fetchCart, _updateCart } from "../store/cart";
 
 export class SingleProduct extends React.Component {
   constructor(props) {
@@ -14,6 +14,10 @@ export class SingleProduct extends React.Component {
   }
 
   async componentDidMount() {
+    if (!localStorage.getItem("cart")) {
+      localStorage.setItem("cart", JSON.stringify([]));
+    }
+
     this.props.getCart();
     await this.props.getProduct(this.props.match.params.productId);
     this.setState({
@@ -23,14 +27,14 @@ export class SingleProduct extends React.Component {
 
   async handleClick(productId) {
     if (this.props.isLoggedIn) {
-      const check = this.props.cart.filter((item) => {
+      const check = this.props.cart.filter(item => {
         return item.product.id === productId;
       });
       if (check[0]) {
-        window.alert('Item already in cart!');
+        window.alert("Item already in cart!");
         return;
       }
-      const token = window.localStorage.getItem('token');
+      const token = window.localStorage.getItem("token");
       const sendData = {
         headers: {
           authorization: token,
@@ -38,19 +42,20 @@ export class SingleProduct extends React.Component {
       };
       await axios.post(`/api/cart/`, { productId }, sendData);
       this.props.getCart();
-      window.alert('Added to cart!');
+      window.alert("Added to cart!");
     } else {
       let cart = [];
-      if (localStorage.getItem('cart')) {
-        cart = JSON.parse(localStorage.getItem('cart'));
+      if (localStorage.getItem("cart")) {
+        cart = JSON.parse(localStorage.getItem("cart"));
       }
-      const check = this.props.cart.filter((item) => {
+      const check = this.props.cart.filter(item => {
         return item.product.id === productId;
       });
       if (check[0]) {
-        window.alert('Item already in cart!');
+        window.alert("Item already in cart!");
         return;
       }
+
       cart.push({
         product: {
           id: this.state.product.id,
@@ -63,9 +68,9 @@ export class SingleProduct extends React.Component {
         quantityInCart: 1,
         cartId: Number(this.state.product.id),
       });
-      localStorage.setItem('cart', JSON.stringify(cart));
+      localStorage.setItem("cart", JSON.stringify(cart));
       this.props.getCart();
-      window.alert('Added to cart!');
+      window.alert("Added to cart!");
     }
   }
 
@@ -88,8 +93,8 @@ export class SingleProduct extends React.Component {
           <p className="price">${product.price / 100}</p>
           <p>{product.description}</p>
           <p id="rating">
-            Rating:{' '}
-            {ratingHtml[0] ? ratingHtml.map((star) => star) : 'No Ratings'}
+            Rating:{" "}
+            {ratingHtml[0] ? ratingHtml.map(star => star) : "No Ratings"}
           </p>
           <button
             type="button"
@@ -104,7 +109,7 @@ export class SingleProduct extends React.Component {
   }
 }
 
-const mapState = (state) => {
+const mapState = state => {
   return {
     singleProduct: state.singleProduct,
     cart: state.cart,
@@ -112,10 +117,10 @@ const mapState = (state) => {
   };
 };
 
-const mapDispatch = (dispatch) => {
+const mapDispatch = dispatch => {
   return {
     getCart: () => dispatch(fetchCart()),
-    getProduct: (id) => dispatch(getSingleProduct(id)),
+    getProduct: id => dispatch(getSingleProduct(id)),
     loadInitialData() {
       dispatch(me());
     },
