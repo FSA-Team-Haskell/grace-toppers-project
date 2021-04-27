@@ -1,6 +1,6 @@
-import React from "react";
-import axios from "axios";
-import dateformat from "dateformat";
+import React from 'react';
+import axios from 'axios';
+import dateformat from 'dateformat';
 
 export default class Orders extends React.Component {
   constructor() {
@@ -10,7 +10,7 @@ export default class Orders extends React.Component {
     };
   }
   async componentDidMount() {
-    const token = window.localStorage.getItem("token");
+    const token = window.localStorage.getItem('token');
     const sendData = {
       headers: {
         authorization: token,
@@ -25,25 +25,29 @@ export default class Orders extends React.Component {
     }
 
     return (
-      <div id='order-page'>
-        {this.state.orders.map(order => (
-          <div key={order.id}>
-            <div className="order">
-              <div>Total Cost: ${order.totalCost / 100}</div>
-              <div>Order Date: {dateformat(order.date)}</div>
-            </div>
-            <div id="all-items">
-              {order.carts.map(cart => (
-                <div key={cart.id} id="individual-products">
-                  <img className="hatPic" src={cart.product.pictureURL} />
-                  <h1 id="title">{cart.product.title}</h1>
-                  <p>Quantity: {cart.quantity}</p>
-                  <p>${cart.product.price / 100}</p>
+      <div id="order-page">
+        {this.state.orders
+          .map((order) => (
+            <div key={order.id}>
+              <div className="order">
+                <div>Total Cost: ${order.totalCost / 100}</div>
+                <div>
+                  Order Date: {dateformat(order.date, 'dddd, mmmm dS, yyyy')}
                 </div>
-              ))}
+              </div>
+              <div id="all-items">
+                {order.carts.map((cart) => (
+                  <div key={cart.id} id="individual-products">
+                    <img className="hatPic" src={cart.product.pictureURL} />
+                    <h1 id="title">{cart.product.title}</h1>
+                    <p>Quantity: {cart.quantity}</p>
+                    <p>${cart.product.price / 100}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        )).reverse()}
+          ))
+          .reverse()}
       </div>
     );
   }
