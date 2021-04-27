@@ -1,7 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { destoryCart, fetchCart, _updateCart, checkout } from '../store/cart';
+import React from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { destoryCart, fetchCart, _updateCart, checkout } from "../store/cart";
+import history from "../history";
 
 export class Cart extends React.Component {
   constructor() {
@@ -23,12 +24,19 @@ export class Cart extends React.Component {
 
   handleCheckout(evt) {
     console.log(this.props.cart);
+    if (!this.props.isLoggedIn) {
+      if (window.confirm("Please sign up to checkout")) {
+        this.props.history.push("/signup");
+      }
+
+      return;
+    }
     for (let i = 0; i < this.props.cart.length; i++) {
       if (
         !this.props.cart[i].quantityInCart ||
-        this.props.cart[i].quantityInCart === '0'
+        this.props.cart[i].quantityInCart === "0"
       ) {
-        window.alert('Item with quantity 0 in cart - please update or remove.');
+        window.alert("Item with quantity 0 in cart - please update or remove.");
         return;
       }
     }
@@ -105,22 +113,23 @@ export class Cart extends React.Component {
   }
 }
 
-const mapDispatch = (dispatch) => {
+const mapDispatch = dispatch => {
   return {
     getCart: () => dispatch(fetchCart()),
-    deleteItem: (id) => dispatch(destoryCart(id)),
+    deleteItem: id => dispatch(destoryCart(id)),
     updateItem: (quantity, id) => dispatch(_updateCart(quantity, id)),
-    checkout: (cart) => dispatch(checkout(cart)),
+    checkout: cart => dispatch(checkout(cart)),
     loadInitialData() {
       dispatch(me());
     },
   };
 };
 
-const mapState = (state) => {
+const mapState = (state, otherProps) => {
   return {
     cart: state.cart,
     isLoggedIn: !!state.auth.id,
+    history: otherProps.history,
   };
 };
 
