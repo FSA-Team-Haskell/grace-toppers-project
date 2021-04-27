@@ -70,6 +70,14 @@ a {
   color: black;
 }
 
+#individual-products a:hover {
+  color: goldenrod;
+}
+
+.selected {
+  background-color: hotpink;
+}
+
 #item {
   margin: 1rem;
 }
@@ -88,6 +96,7 @@ a {
 #checkout:hover {
   cursor: pointer;
   background-color: #f6d892;
+  color: goldenrod;
 }
 
 #delete {

@@ -7,6 +7,7 @@ import { me } from './store';
 import SingleProduct from './components/SingleProduct';
 import CheckOutPage from './components/CheckOutPage';
 import Orders from './components/Orders';
+import history from './history';
 
 // import {AccountInfo} from './components/AccountInfo';
 import Cart from './components/Cart';
@@ -21,7 +22,6 @@ class Routes extends Component {
 
   render() {
     const { isLoggedIn } = this.props;
-
     return (
       <div>
         {isLoggedIn ? (
