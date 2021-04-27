@@ -79,7 +79,7 @@ export class SingleProduct extends React.Component {
       });
       localStorage.setItem('cart', JSON.stringify(cart));
       this.props.getCart();
-      window.alert('Added to cart!');
+      this.handlePopup();
     }
   }
 
