@@ -28,7 +28,7 @@ form div {
 
 #all-products {
   display: flex;
-  direction: ltr;
+  direction: column;
   justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
@@ -68,6 +68,7 @@ a {
   background-color: #e0921f;
   border: none;
   border-radius: 10px;
+  color: white;
 }
 #checkout:hover {
   cursor: pointer;
@@ -200,4 +201,23 @@ a {
   width: 80%;
   border-radius: 5px;
   border: solid 1px;
+}
+
+/* Orders.js */
+#order-page {
+  margin: 30px;
+}
+#all-items {
+  width: 100%;
+  display: flex;
+}
+
+.order {
+  height: 50px;
+  background-color: lightgrey;
+  display: flex;
+  font-size: 20px;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-top: 20px;
 }

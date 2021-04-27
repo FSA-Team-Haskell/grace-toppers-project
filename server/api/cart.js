@@ -80,28 +80,28 @@ router.put("/checkout", requireToken, async (req, res, next) => {
     const userId = req.user.id;
     const newOrder = await Order.create();
     await newOrder.setUser(await User.findByPk(userId));
-    const orderId = newOrder.id
-    let totalCost = 0
+    const orderId = newOrder.id;
+    let totalCost = 0;
     const { cart } = req.body;
     for (let item of cart) {
-      totalCost += (item.product.price * item.quantityInCart);
+      totalCost += item.product.price * item.quantityInCart;
       const cartLineItem = await Cart.findOne({
         where: { id: item.cartId },
         include: [Product],
       });
-      console.log()
+      console.log();
       const cartUpdate = {
         isPurchased: true,
         quantity: item.quantityInCart,
-        orderId
+        orderId,
       };
       await cartLineItem.update(cartUpdate);
-      const product = await Product.findByPk(item.product.id)
-      await product.update({stock: product.stock- item.quantityInCart})
+      const product = await Product.findByPk(item.product.id);
+      await product.update({ stock: product.stock - item.quantityInCart });
     }
-    totalCost = totalCost
-    await newOrder.update({totalCost})
-    res.status(200).send()
+    totalCost = totalCost;
+    await newOrder.update({ totalCost });
+    res.status(200).send();
   } catch (error) {
     next(error);
   }
