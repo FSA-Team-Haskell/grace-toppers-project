@@ -7,9 +7,8 @@ import { me } from './store';
 import SingleProduct from './components/SingleProduct';
 import CheckOutPage from './components/CheckOutPage';
 import Orders from './components/Orders';
+import AccountInfo from './components/AccountInfo';
 import history from './history';
-
-// import {AccountInfo} from './components/AccountInfo';
 import Cart from './components/Cart';
 
 /**
@@ -32,9 +31,9 @@ class Routes extends Component {
               path="/products/:productId"
               component={SingleProduct}
             />
-            {/* <Route path="/account" component={AccountInfo} /> */}
             <Route path="/cart" component={Cart} />
             <Route path="/orders" component={Orders} />
+            <Route path="/account" component={AccountInfo} />
             <Route path="/checkout" component={CheckOutPage} />
             <Redirect to="/products" />
           </Switch>

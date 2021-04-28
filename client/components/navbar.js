@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { logout } from '../store';
 import history from '../history';
 
+
 class Navbar extends React.Component {
   constructor(props) {
     super(props);
@@ -41,7 +42,7 @@ class Navbar extends React.Component {
               onClick={this.handleClick}
               className={'/cart' === location ? 'selected' : ''}
               >Cart</Link>
-
+              <Link to="/account">Account Info</Link>
               <Link
               to="/orders"
               name='/orders'

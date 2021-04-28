@@ -1,6 +1,6 @@
 'use strict';
 
-const { db, User, Cart, Product, Order } = require('../server/db');
+const { db, User, Cart, Product, Order, Address } = require('../server/db');
 // const Product = require('../server/db/models/product')
 
 /**
@@ -85,6 +85,15 @@ async function seed() {
     }),
   ]);
 
+  const codyAddress = await Address.create({
+    streetAddress: '100 Maple st.',
+    city: 'Gary',
+    state: 'Indiana',
+    zipCode: '46403',
+  })
+
+  await codyAddress.setUser(users[0]);
+  
   const carts = await Promise.all([Cart.create({ isPurchased: false })]);
 
   await carts[0].setUser(users[0]);
