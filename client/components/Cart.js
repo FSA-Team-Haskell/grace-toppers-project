@@ -13,13 +13,6 @@ export class Cart extends React.Component {
   }
   componentDidMount() {
     this.props.getCart();
-    // this.props.cart.reduce(
-    //   (accum, { product, quantityInCart }) => {
-    //     accum += product.price * quantityInCart;
-    //     return accum;
-    //   },
-    //   0
-    // );
   }
 
   handleCheckout(evt) {
@@ -90,7 +83,6 @@ export class Cart extends React.Component {
                   type="number"
                   min="0"
                   id={cartId}
-                  //value={quantityInCart}
                   placeholder={quantityInCart}
                   onChange={this.handleChange}
                 />

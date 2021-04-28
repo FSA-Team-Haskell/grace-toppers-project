@@ -70,6 +70,15 @@ a {
   color: black;
 }
 
+#individual-products a:hover {
+  color: goldenrod;
+}
+
+.selected {
+  /* background-color: hotpink; */
+  color: goldenrod;
+}
+
 #item {
   margin: 1rem;
 }
@@ -88,6 +97,7 @@ a {
 #checkout:hover {
   cursor: pointer;
   background-color: #f6d892;
+  color: goldenrod;
 }
 
 #delete {
@@ -231,7 +241,7 @@ a {
 
 .order {
   height: 50px;
-  background-color: lightgrey;
+  background-color: goldenrod;
   display: flex;
   font-size: 20px;
   justify-content: space-evenly;
