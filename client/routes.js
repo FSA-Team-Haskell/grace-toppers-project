@@ -8,6 +8,7 @@ import SingleProduct from './components/SingleProduct';
 import CheckOutPage from './components/CheckOutPage';
 import Orders from './components/Orders';
 import AccountInfo from './components/AccountInfo';
+import history from './history';
 import Cart from './components/Cart';
 
 /**
@@ -20,7 +21,6 @@ class Routes extends Component {
 
   render() {
     const { isLoggedIn } = this.props;
-
     return (
       <div>
         {isLoggedIn ? (
