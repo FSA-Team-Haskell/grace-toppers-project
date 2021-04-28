@@ -42,14 +42,18 @@ class Navbar extends React.Component {
               onClick={this.handleClick}
               className={'/cart' === location ? 'selected' : ''}
               >Cart</Link>
-              <Link to="/account">Account Info</Link>
+              <Link 
+              to="/account"
+              name='/account'
+              onClick={this.handleClick}
+              className={'/account' === locaiton ? 'selected' : ''}
+              >Account Info</Link>
               <Link
               to="/orders"
               name='/orders'
               onClick={this.handleClick}
               className={'/orders' === location ? 'selected' : ''}
               >Orders</Link>
-              {/* <Link to="/account">Account Info</Link> */}
               <a href="#"
               onClick={logOut}
               >
