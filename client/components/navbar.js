@@ -59,7 +59,7 @@ class Navbar extends React.Component {
             <div>
               {/* The navbar will show these links before you log in */}
               <Link to="/home" onClick={this.handleClick} name='/home'
-              className={homeCondition? 'selected' : ''}
+              className={homeCondition ? 'selected' : ''}
               >Home</Link>
 
               <Link to="/cart" onClick={this.handleClick} name='/cart'
