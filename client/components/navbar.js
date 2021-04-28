@@ -46,7 +46,7 @@ class Navbar extends React.Component {
               to="/account"
               name='/account'
               onClick={this.handleClick}
-              className={'/account' === locaiton ? 'selected' : ''}
+              className={'/account' === location ? 'selected' : ''}
               >Account Info</Link>
               <Link
               to="/orders"
